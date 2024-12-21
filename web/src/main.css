@@ -1,0 +1,271 @@
+:root {
+    --bg-primary: #1e1e1e;
+    --bg-secondary: #252526;
+    --bg-tertiary: #2d2d2d;
+    --text-primary: #d4d4d4;
+    --text-secondary: #808080;
+    --border-color: #3c3c3c;
+    --button-hover: #404040;
+    --accent-color: #007acc;
+    --success-color: #316e33;
+    --warning-color: #f44336;
+    --neutral-color: #607D8B;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a {
+    color: inherit;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.title-container {
+    color: var(--text-primary);
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.title-container p {
+    opacity: .7;
+    line-height: 1.6;
+}
+
+.title i {
+    color: var(--accent-color);
+}
+
+.editor-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    height: calc(100vh - 100px);
+}
+
+.left-panel {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.editor-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.output-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+textarea {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+textarea:focus {
+    outline: 1px solid var(--accent-color);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+    flex-wrap: wrap;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.action-button i {
+    font-size: 1rem;
+}
+
+.action-button.run {
+    background-color: var(--success-color);
+}
+
+.action-button.stop {
+    background-color: var(--warning-color);
+}
+
+.action-button.clear,
+.action-button.reset {
+    background-color: var(--neutral-color);
+}
+
+.action-button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.action-button:active {
+    transform: translateY(0);
+}
+
+/* 스크롤바 스타일링 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--button-hover);
+}
+
+/* 읽기 전용 텍스트영역 스타일 */
+textarea[readonly] {
+    background-color: var(--bg-tertiary);
+    opacity: 0.9;
+}
+
+footer {
+    margin-top: 50px;
+    padding: 10px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 1024px) {
+    .editor-layout {
+        grid-template-columns: 1.5fr 1fr;
+    }
+
+    .container {
+        padding: 0 10px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .editor-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+
+    .left-panel,
+    .right-panel {
+        height: auto;
+    }
+
+    .editor-section textarea {
+        height: 300px;
+    }
+
+    .output-section textarea {
+        height: 200px;
+    }
+
+    .input-section textarea,
+    .debug-section textarea {
+        height: 150px;
+    }
+
+    .button-group {
+        justify-content: center;
+    }
+
+    .action-button {
+        flex: 1;
+        min-width: 140px;
+        max-width: calc(50% - 5px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .title-container {
+        margin-bottom: 35px;
+    }
+
+    .title-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .title-container p {
+        font-size: 0.9rem;
+    }
+
+    .panel-header {
+        font-size: 0.8rem;
+    }
+
+    .action-button {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+        min-width: calc(50% - 5px);
+    }
+
+    textarea {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="umjunsik">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    <title>비빔랭 웹 IDE</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="src/main.css" rel="stylesheet">
+</head>
+
+<body>
+    <main class="container">
+        <div class="title-container">
+            <h2>비빔랭 웹 IDE</h2><br />
+            <p>
+                <a href="https://github.com/icecream0910/bibimbap-lang" target="_blank">비빔랭</a>의 코드를 실행해볼 수 있는 웹 IDE입니다.
+                더 빠른 속도의 실행을 원하시면 <a href="https://github.com/icecream0910/bibimbap-lang" target="_blank">nodeJS
+                    구현체</a>를
+                사용해보세요.<br />
+                비빔랭에 대해 자세히 알아보려면 <a href="https://bibimbap-lang.yuntae.in" target="_blank">문서</a>를 읽어보세요.
+            </p>
+        </div>
+
+
+        <div class="editor-layout">
+            <div class="left-panel">
+                <div class="editor-section">
+                    <div class="panel-header">
+                        <i class="fas fa-code"></i>
+                        코드
+                    </div>
+                    <textarea name="code" placeholder="비빔랭 코드를 여기 입력하세요"></textarea>
+
+                    <div class="button-group">
+                        <button class="action-button run" name="run">
+                            <i class="fas fa-play"></i>
+                            실행
+                        </button>
+                        <button class="action-button stop" name="stop">
+                            <i class="fas fa-stop"></i>
+                            멈춤
+                        </button>
+                        <button class="action-button clear" name="clear">
+                            <i class="fas fa-trash-alt"></i>
+                            메시지 지움
+                        </button>
+                        <button class="action-button reset" name="reset">
+                            <i class="fas fa-undo"></i>
+                            코드 초기화
+                        </button>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <div class="panel-header">
+                        <i class="fas fa-terminal"></i>
+                        출력
+                    </div>
+                    <textarea name="output" placeholder="출력은 여기 표시됩니다" readonly></textarea>
+                </div>
+            </div>
+
+            <div class="right-panel">
+
+                <div class="input-section">
+                    <div class="panel-header">
+                        <i class="fas fa-keyboard"></i>
+                        입력
+                    </div>
+                    <textarea name="input" placeholder="입력"></textarea>
+                </div>
+                <br />
+
+                <div class="debug-section">
+                    <div class="panel-header">
+                        <i class="fas fa-bug"></i>
+                        디버그 콘솔
+                    </div>
+                    <textarea name="dumps" placeholder="디버그 값들이 표시됩니다" readonly></textarea>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="src/main.js"></script>
+</body>
+
+<footer>
+    <p>
+        Developed by <a href="https://yuntae.in" target="_blank">Yun Taein</a>.
+    </p>
+</footer>
+
+</html>
