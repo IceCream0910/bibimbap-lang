@@ -11,8 +11,10 @@ interface Function {
 function run(code: string) {
   STOP = false;
 
-  const statements = code.trim().split(code.includes('~') ? '~' : '\n').map(line => line.trim());
-
+  const statements = code.trim().split(code.includes('~') ? '~' : '\n').map(line => {
+    if (line.includes('#')) line = line.split('#')[0];
+    return line.trim();
+  });
   if (statements[0] !== '젓가락이 지휘봉이라고 생각하시고' || !statements.slice(-1)[0].startsWith('탈락했습니다 너무 짜요!')) {
     console.error('어? 이게뭐여 어으얽읅어 응? 음? 이거 비빔랭 아니잖아');
     return;
