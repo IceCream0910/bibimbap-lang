@@ -174,7 +174,7 @@ yarn install #최초 실행 시
 yarn start 파일이름.bibim
 ```
 ### 웹 IDE에서 실행하기
-[여기](https://yuntae.in)서 비빔랭 코드를 실행해볼 수 있어요.
+[여기](https://bibim-ide.yuntae.in)서 비빔랭 코드를 실행해볼 수 있어요.
 
 # 예시
 ### Hello World!
