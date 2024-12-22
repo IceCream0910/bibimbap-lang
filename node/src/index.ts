@@ -3,10 +3,24 @@ import * as readlineSync from 'readline-sync';
 
 let STOP = false;
 
+interface Function {
+  params: string[];
+  body: string[];
+}
+
 function run(code: string) {
   STOP = false;
 
-  const statements = code.trim().split(code.includes('~') ? '~' : '\n').map(line => line.trim());
+  const statements = code.trim().split(code.includes('~') ? '~' : '\n')
+    .map(line => {
+      // '#' 이후의 내용을 제거하고 공백 제거
+      const commentIndex = line.indexOf('#');
+      if (commentIndex !== -1) {
+        line = line.substring(0, commentIndex);
+      }
+      return line.trim();
+    })
+    .filter(line => line.length > 0); // 빈 줄 제거
 
   if (statements[0] !== '젓가락이 지휘봉이라고 생각하시고' || !statements.slice(-1)[0].startsWith('탈락했습니다 너무 짜요!')) {
     console.error('어? 이게뭐여 어으얽읅어 응? 음? 이거 비빔랭 아니잖아');
@@ -15,9 +29,81 @@ function run(code: string) {
 
   const variables: number[] = [];
   let pointer = 0;
+  const functions: Record<string, Function> = {};
+
+  // 함수 정의를 먼저 수집
+  for (let i = 0; i < statements.length; i++) {
+    if (statements[i].startsWith('두둥')) {
+      const funcName = statements[i].split(' ')[0].substring(2);
+      const funcParams = statements[i].split(' ').slice(1);
+      const funcBody: string[] = [];
+      i++; // Skip the opening '두둥' line
+
+      while (i < statements.length && statements[i] !== '두둥') {
+        funcBody.push(statements[i]);
+        i++;
+      }
+
+      functions[funcName] = { params: funcParams, body: funcBody };
+    }
+  }
 
   function execute(statement: string): any {
-    if (statement.includes('그만해유') && statement.includes('?')) { // IF GOTO
+    // Skip function definitions during normal execution
+    if (statement.startsWith('두둥')) {
+      // Skip until matching closing '두둥'
+      while (pointer < statements.length && statements[pointer] !== '두둥') {
+        pointer++;
+      }
+      pointer++; // Skip the closing '두둥'
+      return;
+    }
+
+    if (statement.startsWith("탁")) {
+      const parts = statement.split(" ");
+      const funcName = parts[0].substring(1);
+      const args = parts.slice(1).map(evaluate);
+
+      if (functions[funcName]) {
+        const func = functions[funcName];
+        const backupVariables = [...variables];
+
+        // Set up function parameters
+        for (let i = 0; i < func.params.length; i++) {
+          const paramIndex = func.params[i].split("뷔").length;
+          variables[paramIndex] = args[i];
+        }
+
+        const savedPointer = pointer;
+        let funcResult: number | undefined;
+
+        // Execute function body
+        for (let i = 0; i < func.body.length; i++) {
+          if (func.body[i].startsWith("빕")) {
+            funcResult = evaluate(func.body[i].substring(1));
+            break;
+          } else {
+            const result = execute(func.body[i]);
+            if (result !== undefined) {
+              funcResult = result;
+              break;
+            }
+          }
+        }
+
+        // Restore original variables except for the returned value
+        for (let i = 0; i < backupVariables.length; i++) {
+          variables[i] = backupVariables[i];
+        }
+
+        pointer = savedPointer;
+        return funcResult;
+      } else {
+        throw new Error("정의되지 않은 함수입니다: " + funcName);
+      }
+    }
+
+    if (statement.includes('그만해유') && statement.includes('?')) {
       const condition = evaluate(statement.substring(2, statement.lastIndexOf('?')));
       if (condition === 0) return execute(statement.substr(statement.lastIndexOf('?') + 1));
       return;
@@ -25,8 +111,20 @@ function run(code: string) {
 
     if (statement.includes('뷤')) {
       const variablePointer = statement.split('뷤')[0].split('뷔').length;
-      let setteeValue = evaluate(statement.split('뷤')[1]);
-      if (statement.includes('자!')) setteeValue = evaluate(statement.split('뷤')[0]);
+      let setteeValue: number;
+      const rightSide = statement.split('뷤')[1];
+
+      // Handle function calls that start with '탁'
+      if (rightSide && rightSide.trim().startsWith('탁')) {
+        setteeValue = execute(rightSide.trim());
+      } else {
+        setteeValue = evaluate(rightSide);
+      }
+
+      if (statement.includes('자!')) {
+        setteeValue = evaluate(statement.split('뷤')[0]);
+      }
+
       variables[variablePointer] = setteeValue;
     }
 
@@ -48,7 +146,7 @@ function run(code: string) {
     }
   }
 
-  function parse() {
+  function parse(): boolean {
     if (pointer >= statements.length) {
       return true;
     }
